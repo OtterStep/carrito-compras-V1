@@ -36,7 +36,10 @@ Esta guía detalla los pasos para desplegar el proyecto utilizando **Neon** (Bas
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
 5. Agrega la variable de entorno:
-   - `VITE_API_URL`: `https://tu-backend-en-render.onrender.com/api` (Usa la URL que te proporcionó Render al crear el Web Service).
+
+| Variable | Valor | Descripción |
+| :--- | :--- | :--- |
+| `VITE_API_URL` | `https://[TU_APP].onrender.com/api` | **CRÍTICO**: Debe incluir `https://` y terminar en `/api`. |
 
 ## Notas Importantes
 

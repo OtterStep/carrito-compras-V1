@@ -15,8 +15,9 @@ const ClientesAdmin = () => {
   const loadClientes = async () => {
     try {
       const res = await api.get('/usuarios');
-      const allUsers = res.data.data;
-      setClientes(allUsers.filter((u: any) => u.rol === 'CLIENTE'));
+      const allUsers = res?.data?.data || res?.data || [];
+      const usersArray = Array.isArray(allUsers) ? allUsers : [];
+      setClientes(usersArray.filter((u: any) => u.rol === 'CLIENTE'));
     } catch (error) {
       toast.error('Error al cargar clientes');
     } finally {

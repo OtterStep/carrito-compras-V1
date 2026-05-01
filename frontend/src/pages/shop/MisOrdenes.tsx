@@ -32,7 +32,9 @@ const MisOrdenes = () => {
   const cargarOrdenes = async () => {
     try {
       const res = await ordenService.getMisOrdenes();
-      setOrdenes(res.data);
+      // Asegurar que ordenes sea un array
+      const data = Array.isArray(res) ? res : res.data || [];
+      setOrdenes(data);
     } catch (error) {
       toast.error('Error al cargar órdenes');
     } finally {

@@ -16,7 +16,8 @@ const Wishlist = () => {
   const cargarWishlist = async () => {
     try {
       const res = await clienteService.getWishlist();
-      setItems(res.data.items);
+      const wishlistItems = res?.data?.items || [];
+      setItems(Array.isArray(wishlistItems) ? wishlistItems : []);
     } catch (error) {
       toast.error('Error al cargar lista de deseos');
     } finally {

@@ -23,8 +23,14 @@ const Home = () => {
           configService.getSiteConfig()
         ]);
 
-        if (cuponesRes.success) setCupones(cuponesRes.data);
-        if (Array.isArray(productosRes)) setProductos(productosRes.slice(0, 8));
+        if (cuponesRes.success) {
+          setCupones(Array.isArray(cuponesRes.data) ? cuponesRes.data : []);
+        }
+        
+        // Manejar productos de forma robusta
+        const prods = Array.isArray(productosRes) ? productosRes : productosRes.data || [];
+        setProductos(prods.slice(0, 8));
+        
         if (configRes.success) setSiteConfig(configRes.data);
       } catch (error) {
         console.error('Error fetching data:', error);

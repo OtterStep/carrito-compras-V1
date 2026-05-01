@@ -23,7 +23,11 @@ const Catalogo = () => {
   const fetchProductos = () => {
     setLoading(true);
     productoService.getAll(filtros)
-      .then(setProductos)
+      .then(res => {
+        // Manejar tanto si viene el array directo como si viene envuelto en {data: [...]}
+        const data = Array.isArray(res) ? res : res.data || [];
+        setProductos(data);
+      })
       .catch(console.error)
       .finally(() => setLoading(false));
   };

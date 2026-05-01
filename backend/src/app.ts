@@ -18,6 +18,15 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Root route for health check
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'API del Carrito de Compras activa 🚀',
+    version: '1.0.0',
+    status: 'online'
+  });
+});
+
 // Routes
 app.use('/api', routes);
 

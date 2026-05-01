@@ -28,10 +28,10 @@ const Dashboard = () => {
   }, []);
 
   const stats = [
-    { label: 'Ventas Totales', value: resumen ? `$${resumen.ventasTotales.toLocaleString()}` : '$0', icon: '💰', color: 'bg-green-500', roles: ['ADMIN', 'GERENTE_VENTAS', 'GERENTE_INVENTARIO'] },
-    { label: 'Órdenes Hoy', value: resumen ? resumen.ordenesHoy.toString() : '0', icon: '🛒', color: 'bg-blue-500', roles: ['ADMIN', 'GERENTE_VENTAS', 'VENDEDOR'] },
-    { label: 'Stock Bajo', value: resumen ? `${resumen.stockBajo} productos` : '0 productos', icon: '⚠️', color: 'bg-orange-500', roles: ['ADMIN', 'GERENTE_INVENTARIO'] },
-    { label: 'Clientes Nuevos', value: resumen ? resumen.clientesNuevos.toString() : '0', icon: '👤', color: 'bg-purple-500', roles: ['ADMIN', 'GERENTE_VENTAS'] },
+    { label: 'Ventas Totales', value: resumen?.ventasTotales ? `$${resumen.ventasTotales.toLocaleString()}` : '$0', icon: '💰', color: 'bg-green-500', roles: ['ADMIN', 'GERENTE_VENTAS', 'GERENTE_INVENTARIO'] },
+    { label: 'Órdenes Hoy', value: resumen?.ordenesHoy ? resumen.ordenesHoy.toString() : '0', icon: '🛒', color: 'bg-blue-500', roles: ['ADMIN', 'GERENTE_VENTAS', 'VENDEDOR'] },
+    { label: 'Stock Bajo', value: resumen?.stockBajo ? `${resumen.stockBajo} productos` : '0 productos', icon: '⚠️', color: 'bg-orange-500', roles: ['ADMIN', 'GERENTE_INVENTARIO'] },
+    { label: 'Clientes Nuevos', value: resumen?.clientesNuevos ? resumen.clientesNuevos.toString() : '0', icon: '👤', color: 'bg-purple-500', roles: ['ADMIN', 'GERENTE_VENTAS'] },
   ];
 
   const actions = [

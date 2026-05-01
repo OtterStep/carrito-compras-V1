@@ -44,9 +44,15 @@ async function main() {
   ];
 
   for (const product of products) {
-    await prisma.product.create({
-      data: product,
+    const exists = await prisma.product.findFirst({
+      where: { nombre: product.nombre }
     });
+    
+    if (!exists) {
+      await prisma.product.create({
+        data: product,
+      });
+    }
   }
 
   console.log({ admin });

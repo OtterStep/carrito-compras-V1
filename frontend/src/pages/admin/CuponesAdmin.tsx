@@ -27,7 +27,8 @@ const CuponesAdmin: React.FC = () => {
   const fetchCupones = async () => {
     try {
       const res = await cuponService.getAll();
-      if (res.success) setCupones(res.data);
+      const data = res?.data || res || [];
+      setCupones(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching coupons:', error);
     } finally {

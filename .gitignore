@@ -1,0 +1,119 @@
+# =========================
+
+# DEPENDENCIAS
+
+# =========================
+
+node_modules/
+
+# =========================
+
+# VARIABLES DE ENTORNO (SENSIBLE)
+
+# =========================
+
+.env
+.env.*
+!.env.example
+
+# =========================
+
+# LOGS
+
+# =========================
+
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+
+# BUILD / PRODUCCIÓN
+
+# =========================
+
+dist/
+build/
+.next/
+out/
+
+# =========================
+
+# CACHE
+
+# =========================
+
+.cache/
+.parcel-cache/
+.vite/
+*.tsbuildinfo
+
+# =========================
+
+# SISTEMA OPERATIVO
+
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+
+# EDITORES / IDEs
+
+# =========================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+
+# DOCKER
+
+# =========================
+
+docker-data/
+*.pid
+
+# =========================
+
+# BASE DE DATOS LOCAL
+
+# =========================
+
+*.sqlite
+*.db
+
+# =========================
+
+# ARCHIVOS TEMPORALES
+
+# =========================
+
+tmp/
+temp/
+*.tmp
+
+# =========================
+
+# TESTS / COVERAGE
+
+# =========================
+
+coverage/
+
+# =========================
+
+# ARCHIVOS COMPILADOS
+
+# =========================
+
+*.class
+*.pyc
+*.o
+*.exe

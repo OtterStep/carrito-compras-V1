@@ -1,0 +1,179 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  nombre    String
+  rol       String    @default("CLIENTE") // CLIENTE, ADMIN, GERENTE
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  ordenes   Order[]
+  carrito   Cart?
+  wishlist  Wishlist?
+  reviews   Review[]
+  addresses Address[]
+  cards     Card[]
+}
+
+model Address {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  direccion    String
+  ciudad       String
+  estado       String?
+  codigoPostal String?
+  pais         String?
+  esPrincipal  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Card {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  nombre     String
+  numero     String
+  expiracion String
+  cvv        String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Product {
+  id            String         @id @default(uuid())
+  nombre        String
+  descripcion   String
+  precio        Float
+  stock         Int
+  imagen        String?
+  categoria     String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  orderItems    OrderItem[]
+  cartItems     CartItem[]
+  reviews       Review[]
+  wishlistItems WishlistItem[]
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id])
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String  @id @default(uuid())
+  cartId    String
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  cantidad  Int
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  total       Float
+  descuento   Float       @default(0)
+  couponId    String?
+  coupon      Coupon?     @relation(fields: [couponId], references: [id])
+  estado      String      @default("PENDIENTE") // PENDIENTE, PAGADO, ENVIADO, CANCELADO, DEVUELTO
+  metodoPago  String      @default("TARJETA")
+  direccion   String?
+  ciudad      String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  items       OrderItem[]
+}
+
+model Coupon {
+  id              String    @id @default(uuid())
+  codigo          String    @unique
+  descuento       Float
+  tipo            String    @default("PORCENTAJE") // PORCENTAJE, FIJO
+  fechaExpiracion DateTime?
+  activo          Boolean   @default(true)
+  usoMaximo       Int?
+  usosActuales    Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  ordenes         Order[]
+}
+
+model SystemConfig {
+  id        String   @id @default(uuid())
+  clave     String   @unique // Ej: "TIEMPO_CANCELACION_MINUTOS"
+  valor     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteConfig {
+  id               String   @id @default("singleton")
+  nombreTienda     String   @default("Mi Tienda")
+  logoUrl          String?
+  bannerUrl        String?
+  bannerTexto      String?
+  cuponesVisibles  Boolean  @default(true)
+  updatedAt        DateTime @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  cantidad  Int
+  precio    Float
+}
+
+model Wishlist {
+  id        String         @id @default(uuid())
+  userId    String         @unique
+  user      User           @relation(fields: [userId], references: [id])
+  items     WishlistItem[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model WishlistItem {
+  id         String   @id @default(uuid())
+  wishlistId String
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  createdAt  DateTime @default(now())
+}
+
+model Review {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id])
+  calificacion Int // 1-5
+  comentario   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, productId])
+}

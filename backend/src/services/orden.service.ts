@@ -27,7 +27,7 @@ export const ordenService = {
 
       // 2. Validar stock e items
       let total = 0;
-      const itemsOrden = [];
+      const itemsOrden: any[] = [];
 
       for (const item of items) {
         const producto = await tx.product.findUnique({ where: { id: item.productId } });
@@ -116,7 +116,7 @@ export const ordenService = {
 
     return await prisma.$transaction(async (tx) => {
       let total = 0;
-      const itemsOrden = [];
+      const itemsOrden: any[] = [];
 
       for (const item of cartItems) {
         if (item.product.stock < item.cantidad) {
@@ -138,7 +138,7 @@ export const ordenService = {
 
       // Validar cupón
       let descuento = 0;
-      let couponId = undefined;
+      let couponId: string | undefined = undefined;
       if (couponCode) {
         const coupon = await tx.coupon.findUnique({ where: { codigo: couponCode } });
         if (coupon && coupon.activo && (coupon.usoMaximo === null || coupon.usosActuales < coupon.usoMaximo)) {

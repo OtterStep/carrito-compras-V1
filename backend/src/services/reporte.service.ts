@@ -12,7 +12,7 @@ const EMPRESA = {
 };
 
 const generarPDFConPuppeteer = async (res: Response, html: string, filename: string) => {
-  let browser = null;
+  let browser: any = null;
   try {
     console.log(`Iniciando generación de PDF con Puppeteer: ${filename}`);
     browser = await puppeteer.launch({
@@ -211,7 +211,7 @@ export const reporteService = {
       doc.moveDown(5);
 
       const inventarioPorCategoria: Record<string, any[]> = {};
-      productos.forEach(p => {
+      productos.forEach((p: any) => {
         if (!inventarioPorCategoria[p.categoria]) inventarioPorCategoria[p.categoria] = [];
         inventarioPorCategoria[p.categoria].push(p);
       });
@@ -222,7 +222,7 @@ export const reporteService = {
         doc.moveDown(0.5);
 
         let subtotalCat = 0;
-        prods.forEach(p => {
+        prods.forEach((p: any) => {
           const valor = p.precio * p.stock;
           subtotalCat += valor;
           doc.fontSize(9).fillColor('#0f172a').text(`${p.nombre}`, { continued: true });
@@ -264,7 +264,7 @@ export const reporteService = {
       if (productos.length === 0) {
         doc.fontSize(12).text('No hay productos con stock bajo.', { align: 'center' });
       } else {
-        productos.forEach(p => {
+        productos.forEach((p: any) => {
           doc.fontSize(10).fillColor(p.stock === 0 ? '#ef4444' : '#f59e0b').text(p.nombre, { continued: true });
           doc.fillColor('#64748b').text(` - Categoría: ${p.categoria} - `, { continued: true });
           doc.fillColor('#0f172a').font('Helvetica-Bold').text(`STOCK ACTUAL: ${p.stock}`, { align: 'right' });

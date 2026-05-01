@@ -43,36 +43,36 @@ export const estadisticasService = {
     });
 
     const ventasPorMes: Record<string, number> = {};
-    ventas.forEach(v => {
+    ventas.forEach((v: any) => {
       const mes = v.createdAt.toISOString().substring(0, 7);
       ventasPorMes[mes] = (ventasPorMes[mes] || 0) + Number(v.total);
     });
 
     const data = Object.entries(ventasPorMes).map(([fecha, total]) => ({
       fecha,
-      total
+      total: total as number
     }));
 
     // Pronóstico simple (Promedio móvil de 3 meses)
-    const dataConPronostico = data.map((item, index) => {
+    const dataConPronostico = data.map((item: any, index: number) => {
       // Regresión lineal simple (y = mx + b)
       const n = index + 1;
       const x = Array.from({ length: n }, (_, i) => i);
-      const y = data.slice(0, n).map(d => d.total);
+      const y = data.slice(0, n).map((d: any) => d.total);
       
-      const sumX = x.reduce((a, b) => a + b, 0);
-      const sumY = y.reduce((a, b) => a + b, 0);
-      const sumXY = x.reduce((a, b, i) => a + b * y[i], 0);
-      const sumXX = x.reduce((a, b) => a + b * b, 0);
+      const sumX = x.reduce((a: number, b: number) => a + b, 0);
+      const sumY = y.reduce((a: number, b: number) => a + b, 0);
+      const sumXY = x.reduce((a: number, b: number, i: number) => a + b * y[i], 0);
+      const sumXX = x.reduce((a: number, b: number) => a + b * b, 0);
       
       const m = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX) || 0;
       const b = (sumY - m * sumX) / n || 0;
       const regresion = m * index + b;
 
-      let pronostico = null;
+      let pronostico: number | null = null;
       if (index >= 2) {
         const ultimos3 = data.slice(index - 2, index + 1);
-        pronostico = Math.round(ultimos3.reduce((acc, curr) => acc + curr.total, 0) / 3);
+        pronostico = Math.round(ultimos3.reduce((acc: number, curr: any) => acc + curr.total, 0) / 3);
       }
       
       return { ...item, pronostico, regresion: Math.round(regresion) };
@@ -95,13 +95,13 @@ export const estadisticasService = {
     const cohortes: Record<string, Record<number, number>> = {};
     const tamanoCohorte: Record<string, number> = {};
 
-    usuarios.forEach(u => {
+    usuarios.forEach((u: any) => {
       if (u.ordenes.length === 0) return;
       
       const mesInicial = u.ordenes[0].createdAt.toISOString().substring(0, 7);
       tamanoCohorte[mesInicial] = (tamanoCohorte[mesInicial] || 0) + 1;
 
-      const mesesActivos = new Set(u.ordenes.map(o => {
+      const mesesActivos = new Set<number>(u.ordenes.map((o: any) => {
         const mesOrden = o.createdAt.toISOString().substring(0, 7);
         const diffMeses = (new Date(mesOrden).getFullYear() - new Date(mesInicial).getFullYear()) * 12 +
                           (new Date(mesOrden).getMonth() - new Date(mesInicial).getMonth());
@@ -109,7 +109,7 @@ export const estadisticasService = {
       }));
 
       if (!cohortes[mesInicial]) cohortes[mesInicial] = {};
-      mesesActivos.forEach(m => {
+      mesesActivos.forEach((m: number) => {
         cohortes[mesInicial][m] = (cohortes[mesInicial][m] || 0) + 1;
       });
     });

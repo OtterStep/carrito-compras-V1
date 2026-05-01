@@ -5,6 +5,8 @@ const getBaseURL = () => {
   let envUrl = import.meta.env.VITE_API_URL;
   if (!envUrl) return '/api';
   
+  envUrl = envUrl.trim();
+
   // Si parece un ID de Render pero le falta el dominio, se lo agregamos
   if (envUrl.startsWith('srv-') && !envUrl.includes('.')) {
     envUrl = `${envUrl}.onrender.com`;
